@@ -1,4 +1,4 @@
-﻿if(EMSCRIPTEN)
+if(EMSCRIPTEN)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -s USE_GLFW=3 -s ASSERTIONS=1 -s WASM=1 -s ASYNCIFY -s GL_ENABLE_GET_PROC_ADDRESS=1")
   set(CMAKE_EXECUTABLE_SUFFIX ".html") # This line is used to set your executable to build with the emscripten html template so taht you can directly open it.
 endif()
@@ -16,7 +16,7 @@ project(MetroGenerator)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_C_STANDARD 11)
 
-set(RAYLIB_VERSION 5.0)
+set(RAYLIB_VERSION 5.5)
 find_package(raylib ${RAYLIB_VERSION} QUIET) # QUIET or REQUIRED
 
 if(NOT raylib_FOUND) # If there's none, fetch and build raylib
@@ -46,8 +46,11 @@ set(SOURCES
   "src/main.cpp"
   "src/raygui.h"
   "src/ui.hpp"
-  "resources.o"
 )
+
+if(WIN32)
+  list(APPEND SOURCES "resources.o")
+endif()
 
 if(WIN32)
   add_executable(${PROJECT_NAME} WIN32
